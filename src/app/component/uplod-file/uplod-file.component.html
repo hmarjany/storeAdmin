@@ -1,0 +1,122 @@
+<div  tabindex="0" style="top: 0; left: 0; padding: 12px; position: fixed; background-color: whitesmoke;min-width: 400px; border: whitesmoke thin solid;overflow-x: auto;max-height: 600px;">
+    <ngfFormData tabindex="0" [files]="files" postName="file" [(FormData)]="sendableFormData"></ngfFormData>
+
+    <ngfUploadStatus tabindex="0" [(percent)]="progress" [httpEvent]="httpEvent"></ngfUploadStatus>
+
+
+    <div class="inline-block" tabindex="0">
+        <div tabindex="0" ngfSelect multiple="1" accept="image/*" [maxSize]="maxSize" [(files)]="files" class="well my-drop-zone"
+            style="border-style:groove;padding:0.5em;text-align:center;width:150px;" [(lastInvalids)]="lastInvalids"
+            (filesChange)="lastFileAt=getDate()">
+            Select Picture
+        </div>
+    </div>
+
+   
+
+    <div class="bg-warning" tabindex="0" *ngIf="lastInvalids?.length" style="margin-bottom: 40px">
+        <h3 tabindex="0" style="color:red;">Last {{ lastInvalids.length }} Invalid Selected Files</h3>
+
+        <table tabindex="0" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Error</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr tabindex="0" *ngFor="let item of lastInvalids;let i=index">
+                    <td>
+                        <div  tabindex="0" *ngIf="['image/gif','image/png','image/jpeg'].indexOf(item.file.type)>=0">
+                            <div class="previewIcon" [ngfBackground]="item.File"></div>
+                        </div>
+                        <strong>{{ item.file.name }}</strong>
+                    </td>
+                    <td nowrap>
+                        {{ item.type }}
+                    </td>
+                    <td nowrap>
+                        {{ item.file.type }}
+                    </td>
+                    <td nowrap>
+                        {{ item.file.size/1024/1024 | number:'.2' }} MB
+                    </td>
+                    <td nowrap>
+                        <button type="button"  tabindex="0" class="btn btn-danger btn-xs" (click)="lastInvalids.splice(i,1)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-bottom: 40px" tabindex="0">
+        <h3>{{ files.length }} Queued Files</h3>
+        <table tabindex="0" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr tabindex="0" *ngFor="let item of files;let i=index">
+                    <td>
+                        <div tabindex="0" *ngIf="['image/gif','image/png','image/jpeg'].indexOf(item.type)>=0">
+                            <div class="previewIcon" [ngfBackground]="item"></div>
+                        </div>
+                        <strong>{{ item.name }}</strong>
+                    </td>
+                    <td nowrap>
+                        {{ item.type }}
+                    </td>
+                    <td nowrap>
+                        {{ item.size/1024/1024 | number:'.2' }} MB
+                    </td>
+                    <td nowrap>
+                        <button tabindex="0" type="button" class="btn btn-danger btn-xs" (click)="files.splice(i,1)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <div>
+                Queue progress:
+                <div tabindex="0" class="progress" style="">
+                    <div tabindex="0" class="progress-bar" role="progressbar" [ngStyle]="{ 'width': progress + '%' }"></div>
+                </div>
+            </div>
+
+            <ng-container tabindex="0" *ngIf="lastFileAt">
+                <p>
+                    <strong>Last file(s) selected At:</strong> {{ lastFileAt | date : 'longTime' }}
+                </p>
+            </ng-container>
+
+            <ng-container tabindex="0" *ngIf="progress==100">
+                <i class="glyphicon glyphicon-ok"></i>
+                &nbsp;Upload Complete
+            </ng-container>
+
+            <button tabindex="0" type="button" class="btn btn-success btn-s" (click)="uploadFiles()" [disabled]="!files.length">
+                <span class="glyphicon glyphicon-upload"></span> Upload all
+            </button>
+
+            <button tabindex="0" type="button" class="btn btn-warning btn-s" (click)="cancel()" [disabled]="!httpEmitter">
+                <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+            </button>
+            <button tabindex="0" type="button" class="btn btn-danger btn-s" (click)="files.length=0" [disabled]="!files.length">
+                <span class="glyphicon glyphicon-trash"></span> Remove all
+            </button>
+        </div>
+    </div>
+</div>

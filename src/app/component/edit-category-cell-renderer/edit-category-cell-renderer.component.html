@@ -1,0 +1,5 @@
+<select id="{{id}}" #containerCategory  tabindex="0" [(ngModel)]="value" style="width: 100px;height: 40px;">
+    <option *ngFor="let type of EnumType.values();index as i;" [value]="i">
+        {{type}}
+    </option>
+</select>

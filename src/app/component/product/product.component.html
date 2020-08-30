@@ -1,0 +1,13 @@
+<div>
+    <ag-grid-angular #agGrid style="width:100%; height: 90vh;" class="ag-theme-alpine" 
+    [gridOptions]="gridOptions"
+    [rowData]="products"
+    (selectionChanged)="onSelectionChanged($event)"
+    [rowSelection]="rowSelection"
+    (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+</div>
+
+
+<button (click)="add()">Add</button>
+<button (click)="Save()">Save</button>
