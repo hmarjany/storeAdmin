@@ -122,8 +122,8 @@ export class ProductComponent implements OnInit {
         editable: this.isCheck,
         cellRendererParams: Brand,
         valueGetter: function (params) {
-          if (params.data.Brand) {
-            return parseInt(params.data.Brand);
+          if (params.data.Barnd) {
+            return parseInt(params.data.Barnd);
           }
         }
       },
