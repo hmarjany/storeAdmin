@@ -116,6 +116,13 @@ export class ProductComponent implements OnInit {
 
       },
       {
+        field: "LastPrice",
+        cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
+        cellEditor: 'editCellRenderer',
+        editable: this.isCheck
+
+      },
+      {
         field: "Barnd",
         cellRenderer: this.isEditable() ? 'SelectBoxViewComponent' : '',
         cellEditor: 'editCategoryCellRenderer',

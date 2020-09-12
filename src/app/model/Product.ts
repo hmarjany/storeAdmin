@@ -13,6 +13,7 @@ export class Product {
     ImagePath?: String;
     Name?: String;
     Price?: Number;
+    LastPrice: Number;
     Barnd?: Brand;
     Sale?: Boolean;
     SpecialOffer?: Boolean;
