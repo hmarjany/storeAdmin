@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { INoRowsOverlayAngularComp } from 'ag-grid-angular';
 import { INoRowsOverlayParams, IAfterGuiAttachedParams } from 'ag-grid-community';
 import { Guid } from 'src/app/Guid ';
+import { server } from 'src/app/server';
 
 @Component({
   selector: 'app-uplod-file',
@@ -15,7 +16,7 @@ export class UplodFileComponent implements INoRowsOverlayAngularComp {
   accept = '*'
   files: File[] = []
   progress: number
-  url = 'http://127.0.0.1:3100/upload'
+  url = server.serverUrl + 'upload'
   hasBaseDropZoneOver: boolean = false
   httpEmitter: Subscription
   httpEvent: HttpEvent<{}>
@@ -64,6 +65,17 @@ export class UplodFileComponent implements INoRowsOverlayAngularComp {
     }
   }
 
+  removeItem(i: number){
+    var file = this.files[i];
+    var image = this.value.find(x=>x === file.name);
+    if(image){
+      var imageIndex = this.value.indexOf(image);
+      this.value.splice(imageIndex ,1);
+      this.imagePath = this.value;
+    }
+    this.files.splice(i,1);
+  }
+
   private EditImages() {
     if (this.value != undefined) {
       this.value.forEach((item) => {
@@ -88,7 +100,15 @@ export class UplodFileComponent implements INoRowsOverlayAngularComp {
 
   uploadFiles(): Subscription {
     this.ImagePath();
+    var hasData = false;
+    this.sendableFormDataUniqName.forEach(item=>{
+      hasData = true;
+    });
 
+    if(!hasData){
+
+      return;
+    }
     const req = new HttpRequest<FormData>(
       'POST',
       this.url,

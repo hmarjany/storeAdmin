@@ -18,7 +18,13 @@ export class Product {
     Sale?: Boolean;
     SpecialOffer?: Boolean;
     Sepcification?: String;
-    AdditinalInfos?: { key: String, value: String }[];
+    AdditinalInfos = [
+        { key: 'وزن', value: '' },
+        { key: 'رنگ', value: '' },
+        { key: 'ابعاد', value: '' },
+        { key: 'سایز', value: '' },
+        { key: 'جنس', value: '' }
+    ];
     Comments?: Comment;
     Quantity?: Number;
     IsDirty: boolean = false;

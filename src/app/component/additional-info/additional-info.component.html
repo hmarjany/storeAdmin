@@ -1,7 +1,8 @@
 <div #containerDic tabindex="0"
-    style="padding: 12px;top:0;left: 0; position: fixed; background-color: whitesmoke;min-width: 400px; border: whitesmoke thin solid;overflow-x: auto;max-height: 600px;">
-    <div tabindex="0" *ngFor="let dic of value" style="display: flex;flex-wrap: nowrap;align-items: center;padding: 10px;border-bottom: dimgrey solid thin;">
-            <input tabindex="0" matInput disabled="true" style="margin: 10px;border: none;" [(ngModel)]="dic.key">
-            <textarea tabindex="0" style="width: 100%;" [(ngModel)]="dic.value"></textarea>
+    style="padding: 2px;top:0;right: 0; position: fixed; background-color: white;min-width: 400px; border: black thin solid;overflow-x: auto;max-height: 600px;">
+    <div tabindex="0" *ngFor="let dic of value" style="display: flex;flex-wrap: nowrap;align-items: center;;background-color: whitesmoke;margin: 2px;">
+            
+            <textarea tabindex="0" style="width: 100%;direction: rtl;" [(ngModel)]="dic.value"></textarea>
+            <input tabindex="0" matInput disabled="true" style="width: 10%; direction: rtl; margin: 10px;border: none;background-color: transparent;" [(ngModel)]="dic.key">
     </div>
 </div>

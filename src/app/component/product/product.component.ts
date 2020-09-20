@@ -14,6 +14,7 @@ import { AdditionalInfoComponent } from '../additional-info/additional-info.comp
 import { HttpClient } from '@angular/common/http';
 import { SelectBoxViewComponent } from '../select-box-view/select-box-view.component';
 import { UplodFileViewComponent } from '../uplod-file-view/uplod-file-view.component';
+import { server } from 'src/app/server';
 
 @Component({
   selector: 'app-product',
@@ -26,9 +27,10 @@ export class ProductComponent implements OnInit {
   isCheck = true;
   edit = 'Dont Edit';
   products: Product[];
-  private gridApi;
-  private gridColumnApi;
-  private rowSelection;
+  gridApi;
+  gridColumnApi;
+  selectedRow: Product;
+  rowSelection;
 
   constructor(private http: HttpClient) {
 
@@ -40,14 +42,17 @@ export class ProductComponent implements OnInit {
   }
 
   Save() {
-    this.http.post<Product[]>('http://127.0.0.1:3100/product/save', this.products).subscribe(data => {
-      console.log(data);
+    this.gridApi.stopEditing();
+    this.http.post<Product[]>(server.serverUrl + 'product/save', this.products).subscribe(data => {
+      this.products = data;
+      this.gridApi.startEditingCell()
     });
   }
 
   onSelectionChanged(event) {
     var selectedRows = this.gridApi.getSelectedNodes();
     selectedRows[0].data.IsDirty = true;
+    this.selectedRow = selectedRows[0].data as Product;
   }
 
   onGridReady(params) {
@@ -251,12 +256,19 @@ export class ProductComponent implements OnInit {
     }
     this.gridOptions.rowData = this.products;
     this.gridOptions.singleClickEdit = true;
+    this.gridOptions.getRowStyle = function(params) {
+      if (params.data.Quantity < 4) {
+          return { background: 'rgb(245 102 119 / 25%)' };
+      }else{
+        return { background: 'white' };
+      }
+  }
   }
 
 
   ngOnInit() {
     this.getGridData();
-    this.http.get<Product[]>('http://127.0.0.1:3100/product/getList').subscribe(data => {
+    this.http.get<Product[]>(server.serverUrl + 'product/getList').subscribe(data => {
       this.products = data;
     });
   }
@@ -269,6 +281,11 @@ export class ProductComponent implements OnInit {
 
   add() {
     this.products.push(new Product());
+    this.gridOptions.api.setRowData(this.products);
+  }
+
+  Remove(){
+    this.products.splice(this.products.indexOf(this.selectedRow), 1);
     this.gridOptions.api.setRowData(this.products);
   }
 

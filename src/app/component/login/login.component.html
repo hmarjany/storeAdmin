@@ -1,0 +1,29 @@
+<div fxLayout="column" fxLayoutAlign="center center" style="height: 100vh;direction: ltr;">
+    <div fxLayout="column" fxLayoutAlign="start center" class="container">
+        <div>
+            <img [src]="" />
+        </div>
+        
+        <div fxLayout="row" fxLayoutAlign="start center" style="color: red;">
+            {{errorObject.Message}}
+        </div>
+        <br/>
+        <form [formGroup]="form" (ngSubmit)="login()">
+            <div>
+                <input type="text"  matInput placeholder="نام کاربری" formControlName="username" autocomplete="off" autofocus >
+            </div>
+
+            <div>
+                <input type="password" matInput placeholder="کلمه عبور" formControlName="password">
+            </div>
+
+            <br/>
+            <div>
+                <button class="button" type="submit" mat-button>ورود</button>
+            </div>
+
+        </form>
+
+
+    </div>
+</div>
