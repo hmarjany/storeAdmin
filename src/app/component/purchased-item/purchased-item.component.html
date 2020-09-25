@@ -1,0 +1,26 @@
+<div #containerPurchasedItem tabindex="0" style=" width: 100%;height: 100%;background-color: transparent;outline: none;">
+    <div *ngFor="let purchasedItem of value; index as i;" fxLayoutGap="10px" fxLayout="column"
+        fxLayoutAlign="center start">
+        <div fxLayoutGap="10px" fxLayout="row" fxLayoutAlign="start center" style="margin: 2px;">
+            <div fxLayoutGap="2px" fxLayout="row" fxLayoutAlign="start center"
+                style="border-bottom: darkgray solid thin;">
+                <div>
+                    Name : &nbsp;
+                </div>
+                <div>
+                    {{purchasedItem.name}}
+                </div>
+            </div>
+
+            <div fxLayoutGap="2px" fxLayout="row" fxLayoutAlign="start center"
+                style="border-bottom: darkgray solid thin;">
+                <div>
+                    Quantity : &nbsp;
+                </div>
+                <div>
+                    {{purchasedItem.count}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

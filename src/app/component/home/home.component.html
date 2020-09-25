@@ -10,15 +10,27 @@
         Product List Invertory
     </div>
     <div (click) = "transactionClick('transaction')" class="card card-1" style="background-color: cadetblue;">
-        Transactions
+        Orders
     </div>
-    <div class="card card-1" style="background-color: blueviolet;">
-        Nothing Now
+    <div (click) = "acountingClick('acounting')" class="card card-1" style="background-color: blueviolet;">
+        Acounting
     </div>
 </div>
 
-<div>
+<div *ngIf="animationProductState === 'in'">
     <div [@slideInOut]="animationProductState" style="padding: 20px;background-color: gainsboro;">
         <app-product></app-product>
+    </div>
+</div>
+
+<div *ngIf="animationTransactionState === 'in'">
+    <div [@slideInOut]="animationTransactionState" style="padding: 20px;background-color: gainsboro;">
+        <app-order></app-order>
+    </div>
+</div>
+
+<div *ngIf="animationAcountingState === 'in'">
+    <div [@slideInOut]="animationAcountingState" style="padding: 20px;background-color: gainsboro;">
+        <app-acounting></app-acounting>
     </div>
 </div>

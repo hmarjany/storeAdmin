@@ -1,18 +1,13 @@
 <div style="background-color: greenyellow;padding: 5px;display: flex;">
     <button style="width: 110px;height: 80px;margin: 5px;" (click)="Save()">Save</button>
-    <button style="width: 110px;height: 80px;margin: 5px;" (click)="add()">Add New Record</button>
-    <button style="width: 110px;height: 80px;margin: 5px;" (click)="Remove()">Remove New Selected Record</button>
-    <button style="width: 110px;height: 80px;margin: 5px;background-color: darkorange;" (click)="IssueVoucher()">Issue Voucher</button>
 </div>
 
 <div>
     <ag-grid-angular #agGrid style="width:100%; height: 90vh;" class="ag-theme-alpine" 
     [gridOptions]="gridOptions"
-    [rowData]="products"
+    [rowData]="orders"
     (selectionChanged)="onSelectionChanged($event)"
     [rowSelection]="rowSelection"
     (gridReady)="onGridReady($event)">
     </ag-grid-angular>
 </div>
-
-

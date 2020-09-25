@@ -27,6 +27,9 @@ import { LoginComponent } from './component/login/login.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppRoutingModule } from './app-routing.module';
 import { DataService } from './service/data-service.service';
+import { OrderComponent } from './component/order/order.component';
+import { PurchasedItemComponent } from './component/purchased-item/purchased-item.component';
+import { AcountingComponent } from './component/acounting/acounting.component';
 
 @NgModule({
   declarations: [
@@ -41,12 +44,15 @@ import { DataService } from './service/data-service.service';
     SelectBoxViewComponent,
     UplodFileViewComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    OrderComponent,
+    PurchasedItemComponent,
+    AcountingComponent
   ],
   imports: [
     BrowserModule,
     AgGridModule.withComponents([EditComponentComponent,RedComponentComponent,EditCategoryCellRendererComponent,
-      UplodFileComponent, CheckBoxComponent,AdditionalInfoComponent,SelectBoxViewComponent, UplodFileViewComponent]),
+      UplodFileComponent, CheckBoxComponent,AdditionalInfoComponent,SelectBoxViewComponent, UplodFileViewComponent,PurchasedItemComponent]),
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

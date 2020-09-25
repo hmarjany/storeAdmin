@@ -3,21 +3,23 @@ import { SubCategory } from './enum/SubCategory';
 import { CategoryType } from './enum/CategoryType';
 import { AdditionalInfo } from './AdditionalInfo';
 import { Brand } from './enum/Brand';
+import { Guid } from '../Guid ';
 
 export class Product {
     _id?: any = 0;
     HASH?: any;
+    SendVocuher: Boolean;
     Category?: Category;
     CategoryType?: CategoryType;
     SubCategory?: SubCategory;
-    ImagePath?: String;
-    Name?: String;
-    Price?: Number;
-    LastPrice: Number;
+    ImagePath?: string;
+    Name?: string;
+    Price?: number;
+    LastPrice: number;
     Barnd?: Brand;
     Sale?: Boolean;
     SpecialOffer?: Boolean;
-    Sepcification?: String;
+    Sepcification?: string;
     AdditinalInfos = [
         { key: 'وزن', value: '' },
         { key: 'رنگ', value: '' },
@@ -26,6 +28,8 @@ export class Product {
         { key: 'جنس', value: '' }
     ];
     Comments?: Comment;
-    Quantity?: Number;
+    Quantity?: number;
+    FirstQuantity?: number;
     IsDirty: boolean = false;
+
 }

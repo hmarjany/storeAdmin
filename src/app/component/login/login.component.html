@@ -10,16 +10,16 @@
         <br/>
         <form [formGroup]="form" (ngSubmit)="login()">
             <div>
-                <input type="text"  matInput placeholder="نام کاربری" formControlName="username" autocomplete="off" autofocus >
+                <input type="text"  matInput placeholder="User" formControlName="username" autocomplete="off" autofocus >
             </div>
 
             <div>
-                <input type="password" matInput placeholder="کلمه عبور" formControlName="password">
+                <input type="password" matInput placeholder="Password" formControlName="password">
             </div>
 
             <br/>
             <div>
-                <button class="button" type="submit" mat-button>ورود</button>
+                <button class="button" type="submit" mat-button>Login</button>
             </div>
 
         </form>

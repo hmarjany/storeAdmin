@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 import { SelectBoxViewComponent } from '../select-box-view/select-box-view.component';
 import { UplodFileViewComponent } from '../uplod-file-view/uplod-file-view.component';
 import { server } from 'src/app/server';
+import { InventoryVoucher } from 'src/app/model/InventoryVoucher';
 
 @Component({
   selector: 'app-product',
@@ -45,7 +46,30 @@ export class ProductComponent implements OnInit {
     this.gridApi.stopEditing();
     this.http.post<Product[]>(server.serverUrl + 'product/save', this.products).subscribe(data => {
       this.products = data;
+      this.gridOptions.rowData = this.products;
       this.gridApi.startEditingCell()
+    });
+  }
+
+  IssueVoucher(){
+    this.gridApi.stopEditing();
+
+    var inventoryVouchers = new Array<InventoryVoucher>();
+    this.products.map((item, i)=>{
+      if(item.SendVocuher){
+        var inventoryVoucher = new InventoryVoucher();
+        inventoryVoucher.incomeDate = new Date();
+        inventoryVoucher.incomeProduct = item;
+        inventoryVoucher.productsQuantity = item.FirstQuantity;
+        inventoryVoucher.totalPrice = item.FirstQuantity * item.Price;
+
+        inventoryVouchers.push(inventoryVoucher);
+      }
+      this.products[i].SendVocuher = false;
+    })
+    this.http.post<InventoryVoucher[]>(server.serverUrl + 'voucher/save', inventoryVouchers).subscribe(data => {
+      this.gridApi.startEditingCell();
+      this.gridOptions.rowData = this.products;
     });
   }
 
@@ -62,6 +86,12 @@ export class ProductComponent implements OnInit {
 
   getColumnDefs() {
     this.gridOptions.columnDefs = [
+      {
+        field: "SendVocuher",
+        cellRenderer: this.isEditable() ? 'CheckBoxComponent' : '',
+        cellEditor: 'CheckBoxComponent',
+        editable: this.isCheck
+      },
       {
         field: "Category",
         cellRenderer: this.isEditable() ? 'SelectBoxViewComponent' : '',
@@ -101,7 +131,7 @@ export class ProductComponent implements OnInit {
       },
       {
         field: "ImagePath",
-        cellRenderer:  '',
+        cellRenderer: '',
         cellEditor: 'UplodFileComponent',
         editable: this.isCheck
 
@@ -172,6 +202,12 @@ export class ProductComponent implements OnInit {
         cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
         cellEditor: 'editCellRenderer',
         editable: this.isCheck
+      },
+      {
+        field: "FirstQuantity",
+        cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
+        cellEditor: 'editCellRenderer',
+        editable: this.isCheck
       }
       // },
       // {
@@ -219,7 +255,7 @@ export class ProductComponent implements OnInit {
       this.gridOptions.defaultColDef = {
         resizable: true,
         flex: 1,
-       // minWidth: 220,
+        // minWidth: 220,
         editable: function (params) {
           return (
             true
@@ -256,13 +292,13 @@ export class ProductComponent implements OnInit {
     }
     this.gridOptions.rowData = this.products;
     this.gridOptions.singleClickEdit = true;
-    this.gridOptions.getRowStyle = function(params) {
+    this.gridOptions.getRowStyle = function (params) {
       if (params.data.Quantity < 4) {
-          return { background: 'rgb(245 102 119 / 25%)' };
-      }else{
+        return { background: 'rgb(245 102 119 / 25%)' };
+      } else {
         return { background: 'white' };
       }
-  }
+    }
   }
 
 
@@ -284,7 +320,7 @@ export class ProductComponent implements OnInit {
     this.gridOptions.api.setRowData(this.products);
   }
 
-  Remove(){
+  Remove() {
     this.products.splice(this.products.indexOf(this.selectedRow), 1);
     this.gridOptions.api.setRowData(this.products);
   }
