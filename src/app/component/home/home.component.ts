@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { SlideInOutAnimation } from 'src/app/animations';
 import { AuthService } from 'src/app/service/auth-service.service';
 
@@ -16,7 +17,14 @@ export class HomeComponent implements OnInit {
   @Output() productListClickEvent = new EventEmitter();
   @Output() transactionClickEvent = new EventEmitter();
 
-  constructor(private authService: AuthService,) { }
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
+  constructor(private changeDetectorRef: ChangeDetectorRef,media: MediaMatcher,private authService: AuthService) {
+    this.mobileQuery = media.matchMedia('(max-width: 6000px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+   }
 
   ngOnInit() {
   }
@@ -42,6 +50,10 @@ export class HomeComponent implements OnInit {
     if (name === 'productList') {
       this.animationProductState = this.animationProductState === 'out' ? 'in' : 'out';
     }
+  }
+
+  onActivate(event) {
+    window.scroll(0, 0);
   }
 
   logout() {

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GridOptions } from 'ag-grid-community';
 import { Order } from 'src/app/model/Order';
 import { server } from 'src/app/server';
@@ -23,10 +24,13 @@ export class OrderComponent implements OnInit {
   orders: Order[];
   gridApi;
   gridColumnApi;
-  selectedRow: Order;
+  selectedRow = new Order();
   rowSelection;
+  orderForm: FormGroup;
+  displayedColumns: string[] = ['count', 'name'];
+  showEdit = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private formBuilder: FormBuilder) {
 
     this.gridOptions = <GridOptions>{
       enableSorting: true,
@@ -40,6 +44,43 @@ export class OrderComponent implements OnInit {
     this.http.get<Order[]>(server.serverUrl + 'order/getList').subscribe(data => {
       this.orders = data;
     });
+
+    this.orderForm = this.formBuilder.group({
+      purchasedItem: [''],
+      pickUp: [''],
+      deliverdStatus: [''],
+      pitotalPriceckUp: [''],
+      totalPrice: [''],
+      paymentStatus: [''],
+      deliverDate: [''],
+      paymentDate: [''],
+      payOnline: [''],
+      address: [''],
+      deliverTo: [''],
+      deliverToPhone: [''],
+      purchasedUserDetails: ['']
+    });
+  }
+
+  EditSelectedRow() {
+    if(!this.selectedRow._id){
+      return;
+    }
+    if (this.showEdit) {
+      this.showEdit = false;
+      this.gridApi.startEditingCell()
+    } else {
+      this.gridApi.stopEditing();
+      this.showEdit = true;
+    }
+  }
+
+  SaveRow(){
+    this.orders[this.orders.indexOf(this.orders.find(x=>x._id === this.selectedRow._id))] = this.selectedRow;
+    this.gridOptions.rowData = this.orders;
+    this.gridApi.refreshCells(this.selectedRow);
+    this.showEdit = false;
+    this.gridApi.startEditingCell()
   }
 
   Save() {
@@ -53,6 +94,7 @@ export class OrderComponent implements OnInit {
   onSelectionChanged(event) {
     var selectedRows = this.gridApi.getSelectedNodes();
     this.selectedRow = selectedRows[0].data as Order;
+    this.orderForm.patchValue(this.selectedRow);
   }
 
   onGridReady(params) {
@@ -179,7 +221,7 @@ export class OrderComponent implements OnInit {
       if (!params.data.deliverdStatus) {
         return { background: '#E91E63' };
       }
-       
+
       if (params.data.payOnline) {
         return { background: 'green' };
       }
@@ -197,4 +239,9 @@ export class OrderComponent implements OnInit {
     columnDef2.editable = this.isCheck;
   }
 
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    
+
+  }
 }

@@ -24,6 +24,9 @@ export class AuthService {
   }
 
   login(user: User) {
+    if(user.email != "admin@admin.com"){
+      return;
+    }
     return this.http.post<UserEnvelop>(server.serverUrl + 'users/login', user)
       .pipe(map(res => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes

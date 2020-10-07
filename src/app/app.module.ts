@@ -30,6 +30,13 @@ import { DataService } from './service/data-service.service';
 import { OrderComponent } from './component/order/order.component';
 import { PurchasedItemComponent } from './component/purchased-item/purchased-item.component';
 import { AcountingComponent } from './component/acounting/acounting.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+
 
 @NgModule({
   declarations: [
@@ -57,6 +64,12 @@ import { AcountingComponent } from './component/acounting/acounting.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatSelectModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatTableModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
     HttpClientModule,
     ngfModule,
     ButtonsModule.forRoot(),
