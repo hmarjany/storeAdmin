@@ -17,7 +17,7 @@ import { RedComponentComponent } from '../red-component/red-component.component'
 })
 export class OrderComponent implements OnInit {
 
-  private gridOptions: GridOptions;
+  gridOptions: GridOptions;
   isEdit = false;
   isCheck = true;
   edit = 'Dont Edit';

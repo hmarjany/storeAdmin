@@ -16,7 +16,7 @@ import { PurchasedItemComponent } from '../purchased-item/purchased-item.compone
 export class AcountingComponent implements OnInit {
 
  
-  private gridOptions: GridOptions;
+  gridOptions: GridOptions;
   isEdit = false;
   isCheck = true;
   edit = 'Dont Edit';

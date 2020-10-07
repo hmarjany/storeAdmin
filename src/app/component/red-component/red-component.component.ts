@@ -12,7 +12,7 @@ export class RedComponentComponent implements OnInit {
   ngOnInit() {
   }
 
-  private params: any;
+  params: any;
 
     agInit(params: any): void {
         this.params = params;

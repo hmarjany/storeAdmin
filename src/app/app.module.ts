@@ -85,4 +85,3 @@ import { MatTableModule } from '@angular/material/table';
 })
 export class AppModule { }
 
-platformBrowserDynamic().bootstrapModule(AppModule);

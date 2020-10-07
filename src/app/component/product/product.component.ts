@@ -23,7 +23,7 @@ import { InventoryVoucher } from 'src/app/model/InventoryVoucher';
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit {
-  private gridOptions: GridOptions;
+  gridOptions: GridOptions;
   isEdit = false;
   isCheck = true;
   edit = 'Dont Edit';
