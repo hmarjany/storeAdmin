@@ -1,5 +1,5 @@
 <div style="background-color: greenyellow;padding: 5px;display: flex;">
-    <button style="width: 110px;height: 80px;margin: 5px;" (click)="Save()">Save</button>
+    
     <button id="edit" style="width: 110px;height: 80px;margin: 5px;" (click)="EditSelectedRow()">Edit Selected Row</button>
 </div>
 <div *ngIf="showEdit" style="z-index: 2;position: absolute;left: 0;top: 0;
@@ -12,7 +12,7 @@ background-color: gray;opacity: 0.8;width: 100%;height: 100vh;" ></div>
 <mat-icon style="color: gray;cursor: pointer;" (click)="EditSelectedRow()">close</mat-icon>
     <form [formGroup]="orderForm" style="max-height: 70vh;">
         <div style="background-color: greenyellow;padding: 5px;display: flex;width: 100%;margin-bottom: 20px;">
-            <button style="width: 110px;height: 80px;margin: 5px;" (click)="SaveRow()">Save</button>
+            <button style="width: 110px;height: 80px;margin: 5px;" (click)="Save()">Save</button>
         </div>
         <div fxLayout="column" fxLayoutGap="2px" fxLayoutAlign="start start">
             <div fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="center center">

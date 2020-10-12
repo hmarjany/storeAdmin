@@ -75,19 +75,13 @@ export class OrderComponent implements OnInit {
     }
   }
 
-  SaveRow(){
-    this.orders[this.orders.indexOf(this.orders.find(x=>x._id === this.selectedRow._id))] = this.selectedRow;
-    this.gridOptions.rowData = this.orders;
-    this.gridApi.refreshCells(this.selectedRow);
-    this.showEdit = false;
-    this.gridApi.startEditingCell()
-  }
-
   Save() {
     this.gridApi.stopEditing();
-    this.http.post<Order[]>(server.serverUrl + 'orders/save', this.orders).subscribe(data => {
-      this.orders = data;
-      this.gridApi.startEditingCell()
+    this.http.post<Order[]>(server.serverUrl + 'order/save', this.selectedRow).subscribe(data => {
+      this.orders[this.orders.indexOf(this.orders.find(x=>x._id === this.selectedRow._id))] = this.selectedRow;
+      this.gridOptions.rowData = data;
+      this.gridApi.refreshCells(this.selectedRow);
+      
     });
   }
 
