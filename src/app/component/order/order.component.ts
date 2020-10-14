@@ -1,6 +1,9 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { GridOptions } from 'ag-grid-community';
 import { Order } from 'src/app/model/Order';
 import { server } from 'src/app/server';
@@ -29,14 +32,23 @@ export class OrderComponent implements OnInit {
   orderForm: FormGroup;
   displayedColumns: string[] = ['count', 'name'];
   showEdit = false;
+  qrCode: string;
+  qrPng: any;
 
-  constructor(private http: HttpClient, private formBuilder: FormBuilder) {
+
+
+  constructor(private http: HttpClient, 
+    private formBuilder: FormBuilder,
+    private sanitizer: DomSanitizer,
+    @Inject(DOCUMENT) document,
+    private ref: ChangeDetectorRef) {
 
     this.gridOptions = <GridOptions>{
       enableSorting: true,
       enableFilter: true
     };
 
+    
   }
 
   ngOnInit() {
@@ -72,6 +84,10 @@ export class OrderComponent implements OnInit {
     } else {
       this.gridApi.stopEditing();
       this.showEdit = true;
+      this.qrCode = JSON.stringify(this.selectedRow._id);
+      setTimeout(()=>{                           //<<<---using ()=> syntax
+        this.crateQrCode();
+   }, 30);
     }
   }
 
@@ -89,6 +105,14 @@ export class OrderComponent implements OnInit {
     var selectedRows = this.gridApi.getSelectedNodes();
     this.selectedRow = selectedRows[0].data as Order;
     this.orderForm.patchValue(this.selectedRow);
+  }
+
+  crateQrCode() {
+    let parent =document.getElementById('parent');
+    let parentElement = null;
+    parentElement = parent.firstChild.firstChild as any;
+
+    this.qrPng = this.sanitizer.bypassSecurityTrustUrl(parentElement.toDataURL());
   }
 
   onGridReady(params) {

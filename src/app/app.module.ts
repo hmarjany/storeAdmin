@@ -36,7 +36,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-
+import { QRCodeModule } from 'angularx-qrcode';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,9 @@ import { MatTableModule } from '@angular/material/table';
     ButtonsModule.forRoot(),
     MatCheckboxModule,
     FlexLayoutModule,
-    AppRoutingModule
+    AppRoutingModule,
+    QRCodeModule,
+    NgxPrintModule
   ],
   providers: [
     DataService,
