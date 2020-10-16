@@ -38,6 +38,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgxPrintModule } from 'ngx-print';
+import { JalaliPipe } from './pipe/jalali.pipe';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { NgxPrintModule } from 'ngx-print';
     LoginComponent,
     OrderComponent,
     PurchasedItemComponent,
-    AcountingComponent
+    AcountingComponent,
+    JalaliPipe
   ],
   imports: [
     BrowserModule,

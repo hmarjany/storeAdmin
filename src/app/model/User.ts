@@ -1,7 +1,7 @@
 export class User {
-    name: String;
-    email: String;
-    password: String;
-    tokens: [{ token: { type: String, requierd: true } }];
-    token: String;
+    name: string;
+    email: string;
+    password: string;
+    tokens: [{ token: { type: string, requierd: true } }];
+    token: string;
 }

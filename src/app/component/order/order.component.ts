@@ -70,7 +70,12 @@ export class OrderComponent implements OnInit {
       address: [''],
       deliverTo: [''],
       deliverToPhone: [''],
-      purchasedUserDetails: ['']
+      refId: [''],
+      purchasedUserDetails:  this.formBuilder.group({
+        'purchaseDate': [''],
+        'userName': [''],
+        'userNamePhone': ['']
+    })
     });
   }
 
@@ -80,19 +85,16 @@ export class OrderComponent implements OnInit {
     }
     if (this.showEdit) {
       this.showEdit = false;
-      this.gridApi.startEditingCell()
     } else {
-      this.gridApi.stopEditing();
       this.showEdit = true;
       this.qrCode = JSON.stringify(this.selectedRow._id);
-      setTimeout(()=>{                           //<<<---using ()=> syntax
+      setTimeout(()=>{
         this.crateQrCode();
    }, 30);
     }
   }
 
   Save() {
-    this.gridApi.stopEditing();
     this.http.post<Order[]>(server.serverUrl + 'order/save', this.selectedRow).subscribe(data => {
       this.orders[this.orders.indexOf(this.orders.find(x=>x._id === this.selectedRow._id))] = this.selectedRow;
       this.gridOptions.rowData = data;
@@ -104,6 +106,7 @@ export class OrderComponent implements OnInit {
   onSelectionChanged(event) {
     var selectedRows = this.gridApi.getSelectedNodes();
     this.selectedRow = selectedRows[0].data as Order;
+    this.selectedRow.deliverDate = new Date();
     this.orderForm.patchValue(this.selectedRow);
   }
 
@@ -125,14 +128,12 @@ export class OrderComponent implements OnInit {
       {
         field: "pickUp",
         cellRenderer: 'CheckBoxComponent',
-        cellEditor: 'CheckBoxComponent',
-        editable: true
+        editable: false
       },
       {
         field: "deliverdStatus",
         cellRenderer: 'CheckBoxComponent',
-        cellEditor: 'CheckBoxComponent',
-        editable: true
+        editable: false
       },
       {
         field: "payOnline",
@@ -193,7 +194,7 @@ export class OrderComponent implements OnInit {
         // minWidth: 220,
         editable: function (params) {
           return (
-            true
+            false
           );
         },
       }
@@ -224,27 +225,28 @@ export class OrderComponent implements OnInit {
     }
     this.gridOptions.rowData = this.orders;
     this.gridOptions.singleClickEdit = true;
+    this.gridOptions.enableRtl = true;
     this.gridOptions.getRowHeight = function (params) {
       return 42 * params.data.purchasedItem.length;
     }
     this.gridOptions.getRowStyle = function (params) {
-      if (!params.data.pickUp && !params.data.deliverdStatus) {
-        return { background: 'red' };
-      }
+      // if (!params.data.pickUp && !params.data.deliverdStatus) {
+      //   return { background: 'red' };
+      // }
 
-      if (!params.data.pickUp) {
-        return { background: 'orange' };
-      }
+      // if (!params.data.pickUp) {
+      //   return { background: 'orange' };
+      // }
 
-      if (!params.data.deliverdStatus) {
-        return { background: '#E91E63' };
-      }
+      // if (!params.data.deliverdStatus) {
+      //   return { background: '#E91E63' };
+      // }
 
-      if (params.data.payOnline) {
-        return { background: 'green' };
-      }
+      // if (params.data.payOnline) {
+      //   return { background: 'green' };
+      // }
 
-      return { background: 'white' };
+      // return { background: 'white' };
     }
   }
 

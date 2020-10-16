@@ -12,6 +12,7 @@ $custom-typography: mat-typography-config($font-family: '"yekan", sans-serif;');
 
 html, body{
     margin: 0;
+    direction: rtl;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: yekan, "Helvetica Neue", sans-serif; }
@@ -27,4 +28,13 @@ input, select, textarea, button{font-family:inherit;}
     font-weight: normal;
     
     font-style: normal
+}
+// selection checkbox gets 4px padding to the RIGHT when LTR
+.ag-ltr .ag-selection-checkbox {
+    padding-right: 4px;
+}
+
+// selection checkbox gets 4px padding to the LEFT when RTL
+.ag-rtl .ag-selection-checkbox {
+    padding-left: 4px;
 }
