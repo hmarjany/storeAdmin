@@ -1,18 +1,154 @@
 <div style="background-color: greenyellow;padding: 5px;display: flex;">
-    <button style="width: 110px;height: 80px;margin: 5px;" (click)="Save()">Save</button>
-    <button style="width: 110px;height: 80px;margin: 5px;" (click)="add()">Add New Record</button>
-    <button style="width: 110px;height: 80px;margin: 5px;" (click)="Remove()">Remove New Selected Record</button>
-    <button style="width: 110px;height: 80px;margin: 5px;background-color: darkorange;" (click)="IssueVoucher()">Issue Voucher</button>
+
+    <button style="width: 110px;height: 80px;margin: 5px;" (click)="Add()">Add</button>
+    <button style="width: 110px;height: 80px;margin: 5px;" (click)="Edit()">Edit</button>
+    <button style="width: 110px;height: 80px;margin: 5px;background-color: darkorange;" (click)="IssueVoucher()">Issue
+        Voucher</button>
+</div>
+
+<div *ngIf="showEdit" style="z-index: 2;position: absolute;left: 0;top: 0;
+background-color: gray;opacity: 0.8;width: 100%;height: 100vh;"></div>
+<div id="editForm" *ngIf="showEdit" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start strech" style="background-color: white;border: thin gray solid;padding: 10px;position: absolute;
+ top: 50%;
+ left: 50%;
+ width: 80vw;
+ transform: translate(-50%, -50%);z-index: 4;overflow: auto;">
+ <div style="max-height: 600px;">
+    <mat-icon style="color: gray;cursor: pointer;" (click)="Close()">close</mat-icon>
+    <form [formGroup]="productForm" style="max-height: 70vh;">
+        <div style="background-color: greenyellow;padding: 5px;display: flex;width: 100%;margin-bottom: 20px;">
+            <button style="width: 110px;height: 80px;margin: 5px;" (click)="SaveProduct()">Save</button>
+        </div>
+
+        <div fxLayout="column" fxLayoutGap="2px" fxLayoutAlign="start start">
+            <div fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="center center">
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>دسته بندی</mat-label>
+                        <select matNativeControl formControlName="Category" [(ngModel)]="selectedRow.Category">
+                            <option *ngFor="let type of CategoryEnumType.values();index as i;" [value]="i">{{type}}
+                            </option>
+                        </select>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>نوع دسته بندی</mat-label>
+                        <select matNativeControl formControlName="CategoryType" [(ngModel)]="selectedRow.CategoryType">
+                            <option *ngFor="let type of CategoryTypeEnumType.values();index as i;" [value]="i">{{type}}
+                            </option>
+                        </select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>زیر مجموعه</mat-label>
+                        <select matNativeControl formControlName="SubCategory" [(ngModel)]="selectedRow.SubCategory">
+                            <option *ngFor="let type of SubCategoryEnumType.values();index as i;" [value]="i">{{type}}
+                            </option>
+                        </select>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>برند</mat-label>
+                        <select matNativeControl formControlName="Barnd" [(ngModel)]="selectedRow.Barnd">
+                            <option *ngFor="let type of BrandEnumType.values();index as i;" [value]="i">{{type}}
+                            </option>
+                        </select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="center center">
+                <div>
+                    <mat-form-field>
+                        <input matInput placeholder="نام کالا" formControlName="Name" [(ngModel)]="selectedRow.Name">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input matInput placeholder="قیمت" formControlName="Price" [(ngModel)]="selectedRow.Price"
+                            [value]="productForm.get('Price').value | toNumber | number">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input matInput placeholder="قیمت قبلی" formControlName="LastPrice" [(ngModel)]="selectedRow.LastPrice" 
+                            [value]="productForm.get('LastPrice').value | toNumber | number">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="center center">
+                <div>
+                    <mat-form-field>
+                        <input matInput placeholder="شرح مختصر" formControlName="Sepcification"
+                            [(ngModel)]="selectedRow.Sepcification">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input matInput placeholder="موجودی اولیه" formControlName="FirstQuantity"
+                            [(ngModel)]="selectedRow.FirstQuantity">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-checkbox formControlName="Sale" [(ngModel)]="selectedRow.Sale">تخفیف دارد؟
+                    </mat-checkbox>
+                </div>
+                <div>
+                    <mat-checkbox formControlName="SpecialOffer" [(ngModel)]="selectedRow.SpecialOffer">فروش ویژه
+                    </mat-checkbox>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+    <div style="padding: 2px; background-color: white;font-family: 'yekan';margin-bottom: 10px;
+    min-width: 400px; border: black thin solid;
+    overflow-x: auto;max-height: 600px;">
+    <button (click)="AddSize()">تعیین سایزها و تعداد</button>
+        <div *ngFor="let item of selectedRow.Size" fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="start start" >
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>انتخاب سایز</mat-label>
+                    <select matNativeControl [(ngModel)]="item.size">
+                        <option *ngFor="let type of SizesEnumType.values();index as i;" [value]="i">{{type}}
+                        </option>
+                    </select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="تعداد" [(ngModel)]="item.quantity">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div style="padding: 2px; background-color: white;font-family: 'yekan';
+    min-width: 400px; border: black thin solid;
+    overflow-x: auto;max-height: 600px;">
+        <div *ngFor="let dic of selectedRow.AdditinalInfos"
+            style="display: flex;background-color: whitesmoke;">
+            <div style="width: 10%;  margin: 10px;border: none;background-color: transparent;">
+                {{dic.key}}&nbsp;:
+            </div>
+            <input style="width: 100%;" [(ngModel)]="dic.value">
+
+        </div>
+    </div>
+    <div>
+        <app-uplod-file [inputValue]="selectedRow.ImagePath" (imagePathChange)="ImagePathChange($event)"></app-uplod-file>
+    </div>
+</div>
 </div>
 
 <div>
-    <ag-grid-angular #agGrid style="width:100%; height: 72vh;" class="ag-theme-alpine" 
-    [gridOptions]="gridOptions"
-    [rowData]="products"
-    (selectionChanged)="onSelectionChanged($event)"
-    [rowSelection]="rowSelection"
-    (gridReady)="onGridReady($event)">
+    <ag-grid-angular #agGrid style="width:100%; height: 72vh;" class="ag-theme-alpine" [gridOptions]="gridOptions"
+        [rowData]="products" (selectionChanged)="onSelectionChanged($event)" [rowSelection]="rowSelection"
+        (gridReady)="onGridReady($event)">
     </ag-grid-angular>
 </div>
-
-

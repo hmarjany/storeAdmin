@@ -16,6 +16,9 @@ import { SelectBoxViewComponent } from '../select-box-view/select-box-view.compo
 import { UplodFileViewComponent } from '../uplod-file-view/uplod-file-view.component';
 import { server } from 'src/app/server';
 import { InventoryVoucher } from 'src/app/model/InventoryVoucher';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Size } from 'src/app/model/Size';
+import { Sizes } from 'src/app/model/enum/Sizes';
 
 @Component({
   selector: 'app-product',
@@ -32,14 +35,45 @@ export class ProductComponent implements OnInit {
   gridColumnApi;
   selectedRow: Product;
   rowSelection;
+  showEdit = false;
+  productForm: FormGroup;
+  CategoryEnumType = Category;
+  SubCategoryEnumType = SubCategory;
+  CategoryTypeEnumType = CategoryType;
+  BrandEnumType = Brand;
+  SizesEnumType = Sizes;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private formBuilder: FormBuilder,) {
 
     this.gridOptions = <GridOptions>{
       enableSorting: true,
       enableFilter: true
     };
 
+  }
+
+  ngOnInit() {
+    this.getGridData();
+    this.http.get<Product[]>(server.serverUrl + 'product/getList').subscribe(data => {
+      this.products = data;
+    });
+
+    this.productForm = this.formBuilder.group({
+      Category: ['', [Validators.required]],
+      CategoryType: ['', [Validators.required]],
+      SubCategory: ['', [Validators.required]],
+      ImagePath: ['', [Validators.required]],
+      Name: ['', [Validators.required]],
+      Price: ['', [Validators.required]],
+      LastPrice: [''],
+      Barnd: ['', [Validators.required]],
+      Sale: [''],
+      SpecialOffer: [''],
+      Sepcification: ['', [Validators.required]],
+      AdditinalInfos: [''],
+      Quantity: [''],
+      FirstQuantity: ['', [Validators.required]],
+    });
   }
 
   Save() {
@@ -51,12 +85,67 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  IssueVoucher(){
+  Close(){
+    this.showEdit = false;
+  }
+
+  Edit() {
+    if (!this.selectedRow._id) {
+      return;
+    }
+    if (this.showEdit) {
+      this.showEdit = false;
+    } else {
+      this.showEdit = true;
+
+    }
+  }
+
+  Add() {
+    if (this.showEdit) {
+      this.showEdit = false;
+    } else {
+      this.showEdit = true;
+      this.selectedRow = new Product();
+    }
+  }
+
+  ImagePathChange(imagePath){
+    this.selectedRow.ImagePath = imagePath;
+  }
+
+  SaveProduct(){
+    let valid = this.productForm.valid;
+    if(!valid){
+      return;
+    }
+    
+    this.selectedRow.Price = parseFloat(this.selectedRow.Price.toString().replace(',',''));
+    this.selectedRow.LastPrice = parseFloat(this.selectedRow.LastPrice.toString().replace(',',''));
+
+    this.http.post<Product>(server.serverUrl + 'product/saveInstance', this.selectedRow).subscribe(data => {
+      this.http.get<Product[]>(server.serverUrl + 'product/getList').subscribe(data => {
+        this.products = data;
+        this.showEdit = false;
+      });
+    });
+  }
+
+  AddSize(){
+    if(this.selectedRow.Size !=undefined && this.selectedRow.Size !=null){
+      this.selectedRow.Size.push(new Size());
+    }else{
+      this.selectedRow.Size = new Array<Size>();
+      this.selectedRow.Size.push(new Size());
+    }
+  }
+
+  IssueVoucher() {
     this.gridApi.stopEditing();
 
     var inventoryVouchers = new Array<InventoryVoucher>();
-    this.products.map((item, i)=>{
-      if(item.SendVocuher){
+    this.products.map((item, i) => {
+      if (item.SendVocuher) {
         var inventoryVoucher = new InventoryVoucher();
         inventoryVoucher.incomeDate = new Date();
         inventoryVoucher.incomeProduct = item;
@@ -77,6 +166,7 @@ export class ProductComponent implements OnInit {
     var selectedRows = this.gridApi.getSelectedNodes();
     selectedRows[0].data.IsDirty = true;
     this.selectedRow = selectedRows[0].data as Product;
+    this.productForm.patchValue(this.selectedRow);
   }
 
   onGridReady(params) {
@@ -90,13 +180,13 @@ export class ProductComponent implements OnInit {
         field: "SendVocuher",
         cellRenderer: this.isEditable() ? 'CheckBoxComponent' : '',
         cellEditor: 'CheckBoxComponent',
-        editable: this.isCheck
+        editable: true
       },
       {
         field: "Category",
         cellRenderer: this.isEditable() ? 'SelectBoxViewComponent' : '',
-        cellEditor: 'editCategoryCellRenderer',
-        editable: this.isCheck,
+        //cellEditor: 'editCategoryCellRenderer',
+        editable: false,
         cellRendererParams: Category,
         singleClickEdit: true,
         valueGetter: function (params) {
@@ -108,8 +198,8 @@ export class ProductComponent implements OnInit {
       {
         field: "CategoryType",
         cellRenderer: this.isEditable() ? 'SelectBoxViewComponent' : '',
-        cellEditor: 'editCategoryCellRenderer',
-        editable: this.isCheck,
+        //cellEditor: 'editCategoryCellRenderer',
+        editable: false,
         cellRendererParams: CategoryType,
         valueGetter: function (params) {
           if (params.data.CategoryType) {
@@ -120,8 +210,8 @@ export class ProductComponent implements OnInit {
       {
         field: "SubCategory",
         cellRenderer: this.isEditable() ? 'SelectBoxViewComponent' : '',
-        cellEditor: 'editCategoryCellRenderer',
-        editable: this.isCheck,
+        //cellEditor: 'editCategoryCellRenderer',
+        editable: false,
         cellRendererParams: SubCategory,
         valueGetter: function (params) {
           if (params.data.SubCategory) {
@@ -129,39 +219,39 @@ export class ProductComponent implements OnInit {
           }
         }
       },
-      {
-        field: "ImagePath",
-        cellRenderer: '',
-        cellEditor: 'UplodFileComponent',
-        editable: this.isCheck
+      // {
+      //   field: "ImagePath",
+      //   cellRenderer: '',
+      //   cellEditor: 'UplodFileComponent',
+      //   editable: this.isCheck
 
-      },
+      // },
       {
         field: "Name",
         cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
-        cellEditor: 'editCellRenderer',
-        editable: this.isCheck
+        //cellEditor: 'editCellRenderer',
+        editable: false
 
       },
       {
         field: "Price",
         cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
-        cellEditor: 'editCellRenderer',
-        editable: this.isCheck
+        //cellEditor: 'editCellRenderer',
+        editable: false
 
       },
       {
         field: "LastPrice",
         cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
-        cellEditor: 'editCellRenderer',
-        editable: this.isCheck
+        //cellEditor: 'editCellRenderer',
+        editable: false
 
       },
       {
         field: "Barnd",
         cellRenderer: this.isEditable() ? 'SelectBoxViewComponent' : '',
-        cellEditor: 'editCategoryCellRenderer',
-        editable: this.isCheck,
+        //cellEditor: 'editCategoryCellRenderer',
+        editable: false,
         cellRendererParams: Brand,
         valueGetter: function (params) {
           if (params.data.Barnd) {
@@ -172,42 +262,42 @@ export class ProductComponent implements OnInit {
       {
         field: "Sale",
         cellRenderer: this.isEditable() ? 'CheckBoxComponent' : '',
-        cellEditor: 'CheckBoxComponent',
-        editable: this.isCheck
+        //cellEditor: 'CheckBoxComponent',
+        editable: false
 
       },
       {
         field: "SpecialOffer",
         cellRenderer: this.isEditable() ? 'CheckBoxComponent' : '',
-        cellEditor: 'CheckBoxComponent',
-        editable: this.isCheck
+        //cellEditor: 'CheckBoxComponent',
+        editable: false
 
       },
-      {
-        field: "Sepcification",
-        cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
-        cellEditor: 'editCellRenderer',
-        editable: this.isCheck
+      // {
+      //   field: "Sepcification",
+      //   cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
+      //   cellEditor: 'editCellRenderer',
+      //   editable: this.isCheck
 
-      },
-      {
-        field: "AdditinalInfos",
-        cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
-        cellEditor: 'AdditionalInfoComponent',
-        editable: this.isCheck
+      // },
+      // {
+      //   field: "AdditinalInfos",
+      //   cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
+      //   cellEditor: 'AdditionalInfoComponent',
+      //   editable: this.isCheck
 
-      },
-      {
-        field: "Quantity",
-        cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
-        cellEditor: 'editCellRenderer',
-        editable: this.isCheck
-      },
+      // },
+      // {
+      //   field: "Quantity",
+      //   cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
+      //   cellEditor: 'editCellRenderer',
+      //   editable: this.isCheck
+      // },
       {
         field: "FirstQuantity",
         cellRenderer: this.isEditable() ? 'redCellRenderer' : '',
-        cellEditor: 'editCellRenderer',
-        editable: this.isCheck
+        //cellEditor: 'editCellRenderer',
+        editable: false
       }
       // },
       // {
@@ -258,7 +348,7 @@ export class ProductComponent implements OnInit {
         // minWidth: 220,
         editable: function (params) {
           return (
-            true
+            false
           );
         },
       }
@@ -269,7 +359,7 @@ export class ProductComponent implements OnInit {
         //minWidth: 220,
         editable: function (params) {
           return (
-            false
+            true
           );
         },
       }
@@ -292,21 +382,14 @@ export class ProductComponent implements OnInit {
     }
     this.gridOptions.rowData = this.products;
     this.gridOptions.singleClickEdit = true;
+    this.gridOptions.enableRtl = true;
     this.gridOptions.getRowStyle = function (params) {
-      if (params.data.Quantity < 4) {
+      if (params.data.FirstQuantity < 4) {
         return { background: 'rgb(245 102 119 / 25%)' };
       } else {
         return { background: 'white' };
       }
     }
-  }
-
-
-  ngOnInit() {
-    this.getGridData();
-    this.http.get<Product[]>(server.serverUrl + 'product/getList').subscribe(data => {
-      this.products = data;
-    });
   }
 
   isEditable() {

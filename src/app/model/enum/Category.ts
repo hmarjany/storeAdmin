@@ -1,6 +1,8 @@
 export enum Category {
     Wears,
-    Food
+    Food,
+    Toddler,
+    Child
 }
 
 export namespace Category {

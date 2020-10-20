@@ -4,6 +4,7 @@
         Row</button>
 
 </div>
+
 <div *ngIf="showEdit" style="z-index: 2;position: absolute;left: 0;top: 0;
 background-color: gray;opacity: 0.8;width: 100%;height: 100vh;"></div>
 <div id="editForm" *ngIf="showEdit" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start strech" style="background-color: white;border: thin gray solid;padding: 10px;position: absolute;
@@ -18,8 +19,9 @@ background-color: gray;opacity: 0.8;width: 100%;height: 100vh;"></div>
             <button style="width: 110px;height: 80px;margin: 5px;" [useExistingCss]="true"
                 printSectionId="print-section" ngxPrint>Print</button>
         </div>
-        <div id="print-section" style="display: none;width: fit-content;" >
-            <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center" dir="rtl" style="font-weight: bolder;border: black thick double;padding: 5px;border-radius: 25px;width: fit-content;">
+        <div id="print-section" style="display: none;width: fit-content;">
+            <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center" dir="rtl"
+                style="font-weight: bolder;border: black thick double;padding: 5px;border-radius: 25px;width: fit-content;">
                 <div>
                     <img [src]='qrPng' />
                 </div>

@@ -4,6 +4,7 @@ import { CategoryType } from './enum/CategoryType';
 import { AdditionalInfo } from './AdditionalInfo';
 import { Brand } from './enum/Brand';
 import { Guid } from '../Guid ';
+import { Size } from './Size';
 
 export class Product {
     _id?: any = 0;
@@ -12,7 +13,7 @@ export class Product {
     Category?: Category;
     CategoryType?: CategoryType;
     SubCategory?: SubCategory;
-    ImagePath?: string;
+    ImagePath?: Array<String>;
     Name?: string;
     Price?: number;
     LastPrice: number;
@@ -27,6 +28,7 @@ export class Product {
         { key: 'سایز', value: '' },
         { key: 'جنس', value: '' }
     ];
+    Size:Array<Size>;
     Comments?: Comment;
     Quantity?: number;
     FirstQuantity?: number;

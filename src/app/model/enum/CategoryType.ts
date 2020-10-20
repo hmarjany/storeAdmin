@@ -1,7 +1,9 @@
 export enum CategoryType{
     Shoe,
     UnderWear,
-    Wear
+    Wear,
+    FemailChild,
+    MaleChild
 }
 
 export namespace CategoryType {

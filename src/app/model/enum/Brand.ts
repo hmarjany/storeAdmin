@@ -1,6 +1,7 @@
 export enum Brand{
     Ecco,
-    Pecco
+    Pecco,
+    Lapilo
 }
 
 export namespace Brand {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpEvent, HttpRequest, HttpResponse, HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { INoRowsOverlayAngularComp } from 'ag-grid-angular';
@@ -11,7 +11,7 @@ import { server } from 'src/app/server';
   templateUrl: './uplod-file.component.html',
   styleUrls: ['./uplod-file.component.scss']
 })
-export class UplodFileComponent implements INoRowsOverlayAngularComp {
+export class UplodFileComponent implements INoRowsOverlayAngularComp, OnInit {
 
   accept = '*'
   files: File[] = []
@@ -34,13 +34,26 @@ export class UplodFileComponent implements INoRowsOverlayAngularComp {
   maxSize: any
   baseDropValid: any
   value: [string];
+  @Input()inputValue:[string];
+  @Output()imagePathChange = new EventEmitter<Array<string>>();
   params: any;
   pathConst = 'assets/';
 
-  constructor(public HttpClient: HttpClient) { }
+  constructor(public HttpClient: HttpClient) {
+  }
+
+  ngOnInit(){
+    this.value = this.inputValue;
+    this.EditImages();
+  }
+
   agInit(params: INoRowsOverlayParams): void {
     this.params = params;
-    this.value = this.params.value;
+    if(this.params.value != undefined && this.params.value != null){
+      this.value = this.params.value;
+    }else{
+      this.value = this.inputValue;
+    }
 
     this.EditImages();
   }
@@ -50,6 +63,7 @@ export class UplodFileComponent implements INoRowsOverlayAngularComp {
 
   getValue(): any {
     this.EditImages();
+    this.imagePathChange.emit(this.imagePath);
     return this.imagePath;
   }
 
@@ -100,6 +114,7 @@ export class UplodFileComponent implements INoRowsOverlayAngularComp {
 
   uploadFiles(): Subscription {
     this.ImagePath();
+    this.imagePathChange.emit(this.imagePath);
     var hasData = false;
     this.sendableFormDataUniqName.forEach(item=>{
       hasData = true;

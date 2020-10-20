@@ -39,6 +39,7 @@ import { MatTableModule } from '@angular/material/table';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgxPrintModule } from 'ngx-print';
 import { JalaliPipe } from './pipe/jalali.pipe';
+import { ToNumberPipe } from './pipe/to-number.pipe';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { JalaliPipe } from './pipe/jalali.pipe';
     OrderComponent,
     PurchasedItemComponent,
     AcountingComponent,
-    JalaliPipe
+    JalaliPipe,
+    ToNumberPipe
   ],
   imports: [
     BrowserModule,
