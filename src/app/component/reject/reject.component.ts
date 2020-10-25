@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { GridOptions } from 'ag-grid-community';
 import { DeliverTime } from 'src/app/model/enum/DeliverTime';
 import { Order } from 'src/app/model/Order';
+import { Reject } from 'src/app/model/Reject';
 import { server } from 'src/app/server';
 import { CheckBoxComponent } from '../check-box/check-box.component';
 import { EditCategoryCellRendererComponent } from '../edit-category-cell-renderer/edit-category-cell-renderer.component';
@@ -15,31 +16,27 @@ import { PurchasedItemComponent } from '../purchased-item/purchased-item.compone
 import { RedComponentComponent } from '../red-component/red-component.component';
 
 @Component({
-  selector: 'app-order',
-  templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss']
+  selector: 'app-reject',
+  templateUrl: './reject.component.html',
+  styleUrls: ['./reject.component.scss']
 })
-export class OrderComponent implements OnInit {
+export class RejectComponent implements OnInit {
 
   gridOptions: GridOptions;
   isEdit = false;
   isCheck = true;
   edit = 'Dont Edit';
-  orders: Order[];
+  rejects: Reject[];
   gridApi;
   gridColumnApi;
-  selectedRow = new Order();
+  selectedRow = new Reject();
   rowSelection;
-  orderForm: FormGroup;
-  displayedColumns: string[] = ['count', 'name'];
+  rejectForm: FormGroup;
   showEdit = false;
-  qrCode: string;
-  qrPng: any;
-  DeliverTimeEnumType = DeliverTime;
 
 
 
-  constructor(private http: HttpClient, 
+  constructor(private http: HttpClient,
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
     @Inject(DOCUMENT) document,
@@ -50,74 +47,46 @@ export class OrderComponent implements OnInit {
       enableFilter: true
     };
 
-    
+
   }
 
   ngOnInit() {
     this.getGridData();
-    this.http.get<Order[]>(server.serverUrl + 'order/getList').subscribe(data => {
-      this.orders = data;
+    this.http.get<Reject[]>(server.serverUrl + 'order/getRejectList').subscribe(data => {
+      this.rejects = data;
     });
-    this.orderForm = this.formBuilder.group({
-      purchasedItem: [''],
-      pickUp: [''],
-      deliverdStatus: [''],
-      pitotalPriceckUp: [''],
-      totalPrice: [''],
-      paymentStatus: [''],
+    this.rejectForm = this.formBuilder.group({
+      approved: [''],
+      count: [''],
       deliverDate: [''],
       deliverTime: [''],
-      paymentDate: [''],
-      payOnline: [''],
-      address: [''],
-      deliverTo: [''],
       deliverToPhone: [''],
-      refId: [''],
-      purchasedUserDetails:  this.formBuilder.group({
-        'purchaseDate': [''],
-        'userName': [''],
-        'userNamePhone': ['']
-    })
+      deliverToAddress: [''],
+      deliverTo: [''],
+      userName: [''],
+      ProductName: ['']
     });
   }
 
   EditSelectedRow() {
-    if(!this.selectedRow._id){
+    if (!this.selectedRow._id) {
       return;
     }
     if (this.showEdit) {
       this.showEdit = false;
     } else {
       this.showEdit = true;
-      this.qrCode = JSON.stringify(this.selectedRow._id);
-      setTimeout(()=>{
-        this.crateQrCode();
-   }, 30);
     }
   }
 
   Save() {
-    this.http.post<Order[]>(server.serverUrl + 'order/save', this.selectedRow).subscribe(data => {
-      this.orders[this.orders.indexOf(this.orders.find(x=>x._id === this.selectedRow._id))] = this.selectedRow;
-      this.gridOptions.rowData = data;
-      this.gridApi.refreshCells(this.selectedRow);
-      
-    });
+    
   }
 
   onSelectionChanged(event) {
     var selectedRows = this.gridApi.getSelectedNodes();
-    this.selectedRow = selectedRows[0].data as Order;
-    this.selectedRow.deliverDate = new Date();
-    this.orderForm.patchValue(this.selectedRow);
-  }
-
-  crateQrCode() {
-    let parent =document.getElementById('parent');
-    let parentElement = null;
-    parentElement = parent.firstChild.firstChild as any;
-
-    this.qrPng = this.sanitizer.bypassSecurityTrustUrl(parentElement.toDataURL());
+    this.selectedRow = selectedRows[0].data as Reject;
+    this.rejectForm.patchValue(this.selectedRow);
   }
 
   onGridReady(params) {
@@ -128,37 +97,27 @@ export class OrderComponent implements OnInit {
   getColumnDefs() {
     this.gridOptions.columnDefs = [
       {
-        field: "pickUp",
+        field: "approved",
         cellRenderer: 'CheckBoxComponent',
         editable: false
       },
       {
-        field: "deliverdStatus",
-        cellRenderer: 'CheckBoxComponent',
-        editable: false
-      },
-      {
-        field: "payOnline",
-        cellRenderer: 'CheckBoxComponent',
-        editable: false
-      },
-      {
-        field: "totalPrice",
+        field: "deliverDate",
         cellRenderer: 'redCellRenderer',
         editable: false
       },
       {
-        field: "payOnline",
-        cellRenderer: 'CheckBoxComponent',
+        field: "deliverTime",
+        cellRenderer: 'redCellRenderer',
         editable: false
       },
       {
-        field: "purchasedItem",
-        cellRenderer: 'PurchasedItemComponent',
+        field: "count",
+        cellRenderer: 'redCellRenderer',
         editable: false
       },
       {
-        field: "deliverTo",
+        field: "ProductName",
         cellRenderer: 'redCellRenderer',
         editable: false
       },
@@ -168,20 +127,21 @@ export class OrderComponent implements OnInit {
         editable: false
       },
       {
-        field: "address",
+        field: "deliverToAddress",
         cellRenderer: 'redCellRenderer',
         editable: false
       },
       {
-        field: "deliverDate",
+        field: "deliverTo",
         cellRenderer: 'redCellRenderer',
         editable: false
       },
       {
-        field: "paymentDate",
+        field: "userName",
         cellRenderer: 'redCellRenderer',
         editable: false
       },
+      
 
     ];
 
@@ -219,37 +179,12 @@ export class OrderComponent implements OnInit {
     this.defaultColumnDefs();
     this.getColumnDefs();
     this.gridOptions.frameworkComponents = {
-      editCellRenderer: EditComponentComponent,
       redCellRenderer: RedComponentComponent,
-      editCategoryCellRenderer: EditCategoryCellRendererComponent,
       CheckBoxComponent: CheckBoxComponent,
-      PurchasedItemComponent: PurchasedItemComponent
     }
-    this.gridOptions.rowData = this.orders;
+    this.gridOptions.rowData = this.rejects;
     this.gridOptions.singleClickEdit = true;
     this.gridOptions.enableRtl = true;
-    this.gridOptions.getRowHeight = function (params) {
-      return 42 * params.data.purchasedItem.length;
-    }
-    this.gridOptions.getRowStyle = function (params) {
-      // if (!params.data.pickUp && !params.data.deliverdStatus) {
-      //   return { background: 'red' };
-      // }
-
-      // if (!params.data.pickUp) {
-      //   return { background: 'orange' };
-      // }
-
-      // if (!params.data.deliverdStatus) {
-      //   return { background: '#E91E63' };
-      // }
-
-      // if (params.data.payOnline) {
-      //   return { background: 'green' };
-      // }
-
-      // return { background: 'white' };
-    }
   }
 
   show() {
@@ -263,7 +198,7 @@ export class OrderComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    
+
 
   }
 }

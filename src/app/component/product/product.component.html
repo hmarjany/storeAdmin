@@ -90,6 +90,12 @@ background-color: gray;opacity: 0.8;width: 100%;height: 100vh;"></div>
                 </div>
                 <div>
                     <mat-form-field>
+                        <input matInput placeholder="موجودی" formControlName="Quantity"
+                            [(ngModel)]="selectedRow.Quantity">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
                         <input matInput placeholder="موجودی اولیه" formControlName="FirstQuantity"
                             [(ngModel)]="selectedRow.FirstQuantity">
                     </mat-form-field>

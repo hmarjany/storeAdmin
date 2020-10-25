@@ -1,8 +1,5 @@
 <div style="background-color: greenyellow;padding: 5px;display: flex;">
-
-    <button id="edit" style="width: 110px;height: 80px;margin: 5px;" (click)="EditSelectedRow()">Edit Selected
-        Row</button>
-
+    <button id="edit" style="width: 110px;height: 80px;margin: 5px;" (click)="EditSelectedRow()">Edit Selected Row</button>
 </div>
 
 <div *ngIf="showEdit" style="z-index: 2;position: absolute;left: 0;top: 0;
@@ -96,6 +93,12 @@ background-color: gray;opacity: 0.8;width: 100%;height: 100vh;"></div>
                         <input readonly="readonly" matInput placeholder="تاریخ ارسال" formControlName="deliverDate"
                             [value]="orderForm.get('deliverDate').value | jalali">
                     </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input readonly="readonly" matInput placeholder="بازه ارسال" formControlName="deliverTime">
+                    </mat-form-field>
+                    
                 </div>
             </div>
             <div fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="center center">

@@ -1,0 +1,90 @@
+<div style="background-color: greenyellow;padding: 5px;display: flex;">
+    <button id="edit" style="width: 110px;height: 80px;margin: 5px;" (click)="EditSelectedRow()">Edit Selected
+        Row</button>
+</div>
+
+<div *ngIf="showEdit" style="z-index: 2;position: absolute;left: 0;top: 0;
+background-color: gray;opacity: 0.8;width: 100%;height: 100vh;"></div>
+<div id="editForm" *ngIf="showEdit" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start strech" style="background-color: white;border: thin gray solid;padding: 10px;position: absolute;
+ top: 50%;
+ left: 50%;
+ width: 80vw;
+ transform: translate(-50%, -50%);z-index: 4;overflow: auto;">
+    <mat-icon style="color: gray;cursor: pointer;" (click)="EditSelectedRow()">close</mat-icon>
+    <form [formGroup]="rejectForm" style="max-height: 70vh;">
+        <div style="background-color: greenyellow;padding: 5px;display: flex;width: 100%;margin-bottom: 20px;">
+            <button style="width: 110px;height: 80px;margin: 5px;" (click)="Save()">Save</button>
+        </div>
+
+        <div fxLayout="column" fxLayoutGap="2px" fxLayoutAlign="start start">
+            <div fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="center center">
+                <div>
+                    <mat-checkbox formControlName="approved" [(ngModel)]="selectedRow.approved">قبول</mat-checkbox>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input readonly="readonly" matInput placeholder="تعداد" formControlName="count">
+                    </mat-form-field>
+
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input readonly="readonly" matInput placeholder="نام محصول" formControlName="ProductName">
+                    </mat-form-field>
+
+                </div>
+
+                <div>
+                    <mat-form-field>
+                        <input readonly="readonly" matInput placeholder="تلفن تحویل گیرنده" formControlName="deliverToPhone">
+                    </mat-form-field>
+
+                </div>
+                
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="center center">
+                <div>
+                    <mat-form-field>
+                        <input readonly="readonly" matInput placeholder="نام تحویل گیرنده" formControlName="deliverTo">
+                    </mat-form-field>
+
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input readonly="readonly" matInput placeholder="نام کاربر" formControlName="userName">
+                    </mat-form-field>
+
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input readonly="readonly" matInput placeholder="تاریخ ارسال" formControlName="deliverDate"
+                            [value]="rejectForm.get('deliverDate').value | jalali">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input readonly="readonly" matInput placeholder="بازه ارسال" formControlName="deliverTime">
+                    </mat-form-field>
+                    
+                </div>
+                
+            </div>
+            <div fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="start center" style="width: 100%;">
+                <div>
+                    <mat-form-field style="width: 50vw;">
+                        <textarea readonly="readonly" matInput placeholder="آدرس" formControlName="deliverToAddress"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div>
+    <ag-grid-angular #agGrid style="width:100%; height: 72vh;" class="ag-theme-alpine" [gridOptions]="gridOptions"
+        [rowData]="rejects" (selectionChanged)="onSelectionChanged($event)" [rowSelection]="rowSelection"
+        (gridReady)="onGridReady($event)" [pagination]="true">
+    </ag-grid-angular>
+</div>

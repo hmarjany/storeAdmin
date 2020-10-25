@@ -40,6 +40,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { NgxPrintModule } from 'ngx-print';
 import { JalaliPipe } from './pipe/jalali.pipe';
 import { ToNumberPipe } from './pipe/to-number.pipe';
+import { RejectComponent } from './component/reject/reject.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { ToNumberPipe } from './pipe/to-number.pipe';
     PurchasedItemComponent,
     AcountingComponent,
     JalaliPipe,
-    ToNumberPipe
+    ToNumberPipe,
+    RejectComponent
   ],
   imports: [
     BrowserModule,
