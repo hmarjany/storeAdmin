@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   animationTransactionState = 'out';
   animationAcountingState = 'out';
   animationRejectsState = 'out';
+  animationCommentsState = 'out';
   
   @Output() productListClickEvent = new EventEmitter();
   @Output() transactionClickEvent = new EventEmitter();
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit {
     this.animationProductState = 'out';
     this.animationTransactionState = 'out';
     this.animationRejectsState ='out';
+    this.animationCommentsState = 'out';
     if (name === 'acounting') {
       this.animationAcountingState = this.animationAcountingState === 'out' ? 'in' : 'out';
     }
@@ -42,6 +44,7 @@ export class HomeComponent implements OnInit {
     this.animationProductState = 'out';
     this.animationTransactionState = 'out';
     this.animationAcountingState = 'out';
+    this.animationCommentsState = 'out';
     if (name === 'rejects') {
       this.animationRejectsState = this.animationRejectsState === 'out' ? 'in' : 'out';
     }
@@ -51,8 +54,19 @@ export class HomeComponent implements OnInit {
     this.animationProductState = 'out';
     this.animationAcountingState = 'out';
     this.animationRejectsState ='out';
+    this.animationCommentsState = 'out';
     if (name === 'transaction') {
       this.animationTransactionState = this.animationTransactionState === 'out' ? 'in' : 'out';
+    }
+  }
+
+  commentsClick(name: string){
+    this.animationProductState = 'out';
+    this.animationAcountingState = 'out';
+    this.animationRejectsState ='out';
+    this.animationTransactionState = 'out';
+    if (name === 'comments') {
+      this.animationCommentsState = this.animationCommentsState === 'out' ? 'in' : 'out';
     }
   }
 
@@ -60,6 +74,7 @@ export class HomeComponent implements OnInit {
     this.animationTransactionState = 'out';
     this.animationAcountingState = 'out';
     this.animationRejectsState ='out';
+    this.animationCommentsState = 'out';
     if (name === 'productList') {
       this.animationProductState = this.animationProductState === 'out' ? 'in' : 'out';
     }

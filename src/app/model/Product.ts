@@ -5,6 +5,7 @@ import { AdditionalInfo } from './AdditionalInfo';
 import { Brand } from './enum/Brand';
 import { Guid } from '../Guid ';
 import { Size } from './Size';
+import { Comment } from './Comment';
 
 export class Product {
     _id?: any = 0;
@@ -29,9 +30,9 @@ export class Product {
         { key: 'جنس', value: '' }
     ];
     Size:Array<Size>;
-    Comments?: Comment;
+    Comments?: Array<Comment>;
     Quantity?: number;
     FirstQuantity?: number;
     IsDirty: boolean = false;
-
+    desc: string;
 }

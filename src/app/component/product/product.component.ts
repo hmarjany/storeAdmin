@@ -73,6 +73,7 @@ export class ProductComponent implements OnInit {
       AdditinalInfos: [''],
       Quantity: [''],
       FirstQuantity: ['', [Validators.required]],
+      desc:['', [Validators.required]],
     });
   }
 

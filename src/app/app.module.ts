@@ -41,6 +41,7 @@ import { NgxPrintModule } from 'ngx-print';
 import { JalaliPipe } from './pipe/jalali.pipe';
 import { ToNumberPipe } from './pipe/to-number.pipe';
 import { RejectComponent } from './component/reject/reject.component';
+import { CommentsComponent } from './component/comments/comments.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { RejectComponent } from './component/reject/reject.component';
     AcountingComponent,
     JalaliPipe,
     ToNumberPipe,
-    RejectComponent
+    RejectComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,

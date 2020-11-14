@@ -39,6 +39,9 @@
             <a mat-list-item (click)="sidenav.toggle();rejectClick('rejects')">
                 <div>Rejects</div>
             </a>
+            <a mat-list-item (click)="sidenav.toggle();commentsClick('comments')">
+                <div>Comments</div>
+            </a>
             <a mat-list-item (click)="sidenav.toggle();acountingClick('acounting')">
                 <div>Acounting</div>
             </a>
@@ -64,6 +67,12 @@
         <div *ngIf="animationRejectsState === 'in'">
             <div [@slideInOut]="animationRejectsState" style="padding: 20px;background-color: gainsboro;">
                 <app-reject></app-reject>
+            </div>
+        </div>
+
+        <div *ngIf="animationCommentsState === 'in'">
+            <div [@slideInOut]="animationCommentsState" style="padding: 20px;background-color: gainsboro;">
+                <app-comments></app-comments>
             </div>
         </div>
 

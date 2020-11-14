@@ -109,8 +109,13 @@ background-color: gray;opacity: 0.8;width: 100%;height: 100vh;"></div>
                     </mat-checkbox>
                 </div>
             </div>
+            
 
-
+        </div>
+        <div>
+                <mat-form-field style="width: 100%;">
+                    <textarea matInput formControlName="desc" [(ngModel)]="selectedRow.desc" placeholder="توضیحات" autocomplete="off" required></textarea>
+                </mat-form-field>
         </div>
     </form>
     <div style="padding: 2px; background-color: white;font-family: 'yekan';margin-bottom: 10px;
@@ -146,6 +151,7 @@ background-color: gray;opacity: 0.8;width: 100%;height: 100vh;"></div>
 
         </div>
     </div>
+    
     <div>
         <app-uplod-file [inputValue]="selectedRow.ImagePath" (imagePathChange)="ImagePathChange($event)"></app-uplod-file>
     </div>
