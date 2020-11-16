@@ -9,6 +9,7 @@ import { DeliverTime } from 'src/app/model/enum/DeliverTime';
 import { Order } from 'src/app/model/Order';
 import { server } from 'src/app/server';
 import { CheckBoxComponent } from '../check-box/check-box.component';
+import { DateReadComponent } from '../date-read/date-read.component';
 import { EditCategoryCellRendererComponent } from '../edit-category-cell-renderer/edit-category-cell-renderer.component';
 import { EditComponentComponent } from '../edit-component/edit-component.component';
 import { PurchasedItemComponent } from '../purchased-item/purchased-item.component';
@@ -108,7 +109,6 @@ export class OrderComponent implements OnInit {
   onSelectionChanged(event) {
     var selectedRows = this.gridApi.getSelectedNodes();
     this.selectedRow = selectedRows[0].data as Order;
-    this.selectedRow.deliverDate = new Date();
     this.orderForm.patchValue(this.selectedRow);
   }
 
@@ -128,6 +128,13 @@ export class OrderComponent implements OnInit {
   getColumnDefs() {
     this.gridOptions.columnDefs = [
       {
+        field: "purchasedUserDetails.purchaseDate",
+        headerName: "Purchase Date",
+        cellRenderer: 'DateReadComponent',
+        editable: false,
+        sort: 'desc'
+      },
+      {
         field: "pickUp",
         cellRenderer: 'CheckBoxComponent',
         editable: false
@@ -138,8 +145,8 @@ export class OrderComponent implements OnInit {
         editable: false
       },
       {
-        field: "payOnline",
-        cellRenderer: 'CheckBoxComponent',
+        field: "refId",
+        cellRenderer: 'redCellRenderer',
         editable: false
       },
       {
@@ -147,11 +154,7 @@ export class OrderComponent implements OnInit {
         cellRenderer: 'redCellRenderer',
         editable: false
       },
-      {
-        field: "payOnline",
-        cellRenderer: 'CheckBoxComponent',
-        editable: false
-      },
+      
       {
         field: "purchasedItem",
         cellRenderer: 'PurchasedItemComponent',
@@ -172,17 +175,6 @@ export class OrderComponent implements OnInit {
         cellRenderer: 'redCellRenderer',
         editable: false
       },
-      {
-        field: "deliverDate",
-        cellRenderer: 'redCellRenderer',
-        editable: false
-      },
-      {
-        field: "paymentDate",
-        cellRenderer: 'redCellRenderer',
-        editable: false
-      },
-
     ];
 
     this.rowSelection = 'single';
@@ -223,7 +215,8 @@ export class OrderComponent implements OnInit {
       redCellRenderer: RedComponentComponent,
       editCategoryCellRenderer: EditCategoryCellRendererComponent,
       CheckBoxComponent: CheckBoxComponent,
-      PurchasedItemComponent: PurchasedItemComponent
+      PurchasedItemComponent: PurchasedItemComponent,
+      DateReadComponent: DateReadComponent
     }
     this.gridOptions.rowData = this.orders;
     this.gridOptions.singleClickEdit = true;

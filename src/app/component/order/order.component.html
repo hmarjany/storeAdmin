@@ -163,6 +163,6 @@ background-color: gray;opacity: 0.8;width: 100%;height: 100vh;"></div>
 <div>
     <ag-grid-angular #agGrid style="width:100%; height: 72vh;" class="ag-theme-alpine" [gridOptions]="gridOptions"
         [rowData]="orders" (selectionChanged)="onSelectionChanged($event)" [rowSelection]="rowSelection"
-        (gridReady)="onGridReady($event)" [pagination]="true">
+        (gridReady)="onGridReady($event)" [pagination]="true" [paginationPageSize]="8">
     </ag-grid-angular>
 </div>

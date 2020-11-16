@@ -42,6 +42,7 @@ import { JalaliPipe } from './pipe/jalali.pipe';
 import { ToNumberPipe } from './pipe/to-number.pipe';
 import { RejectComponent } from './component/reject/reject.component';
 import { CommentsComponent } from './component/comments/comments.component';
+import { DateReadComponent } from './component/date-read/date-read.component';
 
 @NgModule({
   declarations: [
@@ -63,12 +64,13 @@ import { CommentsComponent } from './component/comments/comments.component';
     JalaliPipe,
     ToNumberPipe,
     RejectComponent,
-    CommentsComponent
+    CommentsComponent,
+    DateReadComponent
   ],
   imports: [
     BrowserModule,
     AgGridModule.withComponents([EditComponentComponent,RedComponentComponent,EditCategoryCellRendererComponent,
-      UplodFileComponent, CheckBoxComponent,AdditionalInfoComponent,SelectBoxViewComponent, UplodFileViewComponent,PurchasedItemComponent]),
+      UplodFileComponent, CheckBoxComponent,AdditionalInfoComponent,SelectBoxViewComponent, UplodFileViewComponent,PurchasedItemComponent, DateReadComponent]),
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

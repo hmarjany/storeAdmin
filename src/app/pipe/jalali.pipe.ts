@@ -6,8 +6,8 @@ import * as moment from 'jalali-moment';
 })
 export class JalaliPipe implements PipeTransform {
   transform(value: any, args?: any): any {
-    let MomentDate = moment(value, 'YYYY/MM/DD');
-    return MomentDate.locale('fa').format('YYYY/M/D');
+    let MomentDate = moment(value, 'YYYY/MM/DD HH:mm:ss');
+    return MomentDate.locale('fa').format('YYYY/M/D HH:mm:ss');
   }
 
 }

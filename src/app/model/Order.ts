@@ -17,4 +17,5 @@ export class Order{
     deliverTo: string;
     deliverToPhone: string;
     purchasedUserDetails:Purchased;
+    refId: any;
 }
